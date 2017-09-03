@@ -15,8 +15,9 @@ class BlogsController < ApplicationController
   end
 
   def create
-    @blog = Blog.new(blogs_params)
-    @blog.user_id = current_user.id
+    #@blog = Blog.new(blogs_params)
+    #@blog.user_id = current_user.id
+    @blog = current_user.blogs.build(blogs_params)
     @blog.picture.retrieve_from_cache! params[:cache][:picture]
     if @blog.save
       redirect_to blogs_path, notice: "写真を投稿しました！"
@@ -33,7 +34,7 @@ class BlogsController < ApplicationController
   def update
     #@blog = Blog.find(params[:id])
     if @blog.update(blogs_params)
-      redirect_to blogs_path, notice: "ブログを編集しました！"
+      redirect_to blogs_path, notice: "投稿を編集しました！"
     else
       render 'edit'
     end
@@ -42,7 +43,7 @@ class BlogsController < ApplicationController
   def destroy
     #@blog = Blog.find(params[:id])
     @blog.destroy
-    redirect_to blogs_path, notice: "ブログを削除しました！"
+    redirect_to blogs_path, notice: "投稿を削除しました！"
   end
 
   def confirm
